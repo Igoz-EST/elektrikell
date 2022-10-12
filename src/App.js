@@ -9,13 +9,13 @@ import FooterComponent from "./footer";
 //import SComponent from './Component'; 
 //import TimerComponent from './timerComponent';
 function App() {
-  const [radioValue, setRadioValue] = useState("1");
-
+  const [radioValue, setRadioValue] = useState("low");
+  const [hourValue, setHourValue] = useState(1);
   return (
     <Container>
       <HeaderComponent setRadioValue={setRadioValue} radioValue={radioValue}/>
-      <BodyComponent radioValue={radioValue}/>
-      <FooterComponent radioValue={radioValue}/>
+      <BodyComponent radioValue={radioValue} hourValue={hourValue}/>
+      <FooterComponent radioValue={radioValue} hourValue={hourValue} setHourValue={setHourValue}/>
     </Container>
   );
 }
