@@ -3,9 +3,12 @@ import Col from "react-bootstrap/Col";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import ButtonGroup from "react-bootstrap/ButtonGroup";
 import Countdown from "react-countdown";
-
+import React, {useState} from "react";
 function Low({hourValue, setHourValue}) {
-    const endOfDay = new Date().setHours(23,59,59,999);
+   // const endOfDay = new Date().setHours(23,59,59,999);
+
+   const [endOfDay, setEndOfDay] = useState(new Date().setHours(23,59,59,999));
+
   const cheapHours = [
     { label: "1h", value: "1" },
     { label: "2h", value: "2" },
@@ -15,8 +18,11 @@ function Low({hourValue, setHourValue}) {
     { label: "8h", value: "8" },
   ];
 
+
   function handleOnChange(event) {
-    setHourValue(event.currentTarget.value);
+   setHourValue(event.currentTarget.value);
+   console.log(event.target.className);
+   setEndOfDay(endOfDay - (3600000 * event.currentTarget.value));
   }
   return (
     <>
@@ -43,7 +49,7 @@ function Low({hourValue, setHourValue}) {
       </Row>
       <Row>
         <Col>
-        <Countdown date={endOfDay} />
+        {endOfDay != 0 ? (<Countdown date={endOfDay}/>) : (<></> )}
         </Col>
       </Row>
       <Row>
