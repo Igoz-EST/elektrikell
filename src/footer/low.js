@@ -19,7 +19,7 @@ function Low({hourValue, setHourValue}) {
     { label: "8h", value: "8" },
   ];
 
-
+  
   function handleOnChange(event) {
     const hour = event.currentTarget.value;
     const newDate = new Date().setHours(23 - hour,59,59,999);
