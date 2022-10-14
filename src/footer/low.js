@@ -19,7 +19,7 @@ function Low({hourValue, setHourValue}) {
     { label: "8h", value: "8" },
   ];
 
-  
+
   function handleOnChange(event) {
     const hour = event.currentTarget.value;
     const newDate = new Date().setHours(23 - hour,59,59,999);
@@ -31,6 +31,14 @@ function Low({hourValue, setHourValue}) {
     setTime(newDate);
    setHourValue(event.currentTarget.value);
   }
+
+  // onChange это триггер события.
+  // событие к на приходит от браузера а к браузеру приходит от пользователя.
+  // onChange запускается, когда пользователь сделал изменения в инпут элементах.
+  // onChange запускает фукции, которых мы называем обработчиками. в обработчик триггер события отправляет объект события (event)
+  // триггеры событий всегда начинаются с 'on'
+  // объект события (event) держит в себе информацию о элементе над которым было совершенно действие
+  // 
   return (
     <>
       <Row>
