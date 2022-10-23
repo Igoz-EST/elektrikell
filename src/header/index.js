@@ -5,63 +5,62 @@ import ButtonGroup from "react-bootstrap/ButtonGroup";
 import ToggleButton from "react-bootstrap/ToggleButton";
 import { getCurrentPrice } from "../services/apiService";
 import ErrorModal from "../ErrorModal";
-const HeaderComponent = (props) => {
-const [price, setPrice] = useState(0);
-const [showError, setShowError] = useState(false);
-const [errorMessage, setErrorMessage] = useState('');
-useEffect(() => {
-  (async function() {
-    try{
-      const response = await getCurrentPrice();
-    setPrice(response.data[0].price);
-    }catch(error){
-      setShowError(true);
-      setErrorMessage(error.message);
-    }
-  }) ();    
-}, []);
+function HeaderComponent ({currentPrice, setCurrentPrice, radioValue, setRadioValue}) {
 
+  const [showError, setShowError] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+
+  useEffect(() => {
+      (async function () {
+          try {
+              const response = await getCurrentPrice();
+              setCurrentPrice(response.data[0].price);
+          } catch(error) {
+              setShowError(true);
+              setErrorMessage(error.message);
+          }
+      }) ();
+  }, [setCurrentPrice]);
 
   const radios = [
-    { name: "Low price", value: "low" },
-    { name: "High price", value: "high" },
-
+      { name: 'Low Price', value: 'low' },
+      { name: 'High price', value: 'high' },
   ];
+
   function handleOnChange(event) {
-    // event.preventDefault();
-    props.setRadioValue(event.currentTarget.value)
+      // event.preventDefault();
+      setRadioValue(event.currentTarget.value);
   }
+
   return (
-    <>
-      <Row>
-        <Col>
-          <h3>Elektrikell</h3>
-        </Col>
-      </Row>
-      <Row onMouseEnter={(event) => console.log(event)}>
-        <Col>Status</Col>
-        <Col>
-          <ButtonGroup>
-            {radios.map((radio, idx) => (
-              <ToggleButton
-                key={idx}
-                id={`radio-${idx}`}
-                type="radio"
-                variant={idx % 2 ? "outline-danger" : "outline-success"}
-                name="radio"
-                value={radio.value}
-                checked={props.radioValue === radio.value}
-                onChange={handleOnChange}
-              >
-                {radio.name}
-              </ToggleButton>
-            ))}
-          </ButtonGroup>
-        </Col>
-        <Col>HIND {price} EUR/MWh</Col>
-      </Row>
-      <ErrorModal errorMessage = {errorMessage} show = {showError} setShow={setShowError}/>
-    </>
+      <>
+          <Row>
+              <Col><h3>Elektrikell</h3></Col>
+          </Row>
+          <Row>
+              <Col>Status</Col>
+              <Col>
+                  <ButtonGroup>
+                      {radios.map((radio, idx) => (
+                          <ToggleButton
+                              key={idx}
+                              id={`radio-${idx}`}
+                              type="radio"
+                              variant={idx % 2 ? 'outline-danger' : 'outline-success'}
+                              name="radio"
+                              value={radio.value}
+                              checked={radioValue === radio.value}
+                              onChange={handleOnChange}
+                          >
+                              {radio.name}
+                          </ToggleButton>
+                      ))}
+                  </ButtonGroup>
+              </Col>
+              <Col>HIND {currentPrice}eur /MWh</Col>
+          </Row>
+          <ErrorModal errorMessage={errorMessage} show={showError} setShow={setShowError}/>
+      </>
   );
 };
 export default HeaderComponent;

@@ -4,11 +4,12 @@ import React from "react";
 import High from './high'
 import Low from './low'
 
-const FooterComponent = ({ radioValue, hourValue, setHourValue }) => {
+const FooterComponent = (props) => {
 
   return (
     <>
-      {radioValue === 'low' ? (<Low {...{hourValue, setHourValue}}/>) : (<High />)}
+         {props.radioValue === 'low' ? (<Low {...props} />) : 
+            (<High currentPrice={props.currentPrice} worstTimeRange={props.worstTimeRange}/>)}
     </>
   );
 
