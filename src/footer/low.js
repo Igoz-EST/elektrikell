@@ -8,7 +8,7 @@ import moment from "moment";
 function Low({hourValue, setHourValue, bestTimeRange, currentPrice}) {
 
   const [showElement, setShowElement] = useState('countdown');
-    const [time, setTime] = useState(new Date());
+    const [time, setTime] = useState(null);
 
     const cheapHours = [
         { label: '1h', value: 1 },
@@ -18,7 +18,14 @@ function Low({hourValue, setHourValue, bestTimeRange, currentPrice}) {
         { label: '6h', value: 6 },
         { label: '8h', value: 8 },
     ];
-
+    //useEffect - это реакт хук, который запускается после того, как весь компонент выполнел рендер
+    //useEffect принимает два аргумента
+    // первый аргумент это callback фунция, которая запускается при...
+    // второй аргумент массив из зависимостей
+    // заисимости, это переменные, которые используются в callback фунции
+    // зависимости при изменении запускают callback фунцию заного
+    // оставив пустой массив а зависимостях, ты гарантируешь, что callback фунция запустится только 1 раз
+    // даже при изменении state, при условии, что в callback фунции ты state не используешь.
     useEffect(() => {
         const countDownUntil = moment.unix(bestTimeRange.timestamp).toDate();
         setTime(countDownUntil);
@@ -61,7 +68,7 @@ function Low({hourValue, setHourValue, bestTimeRange, currentPrice}) {
             </Row>
             <Row>
                 <Col>
-                    {showElement === 'countdown' ? <Countdown date={time} autoStart={true}/> : <h3>Right Now!</h3>}
+                    {showElement === 'countdown' && time ? <Countdown date={time} autoStart={true}/> : <h3>Right Now!</h3>}
                 </Col>
             </Row>
             <Row>
