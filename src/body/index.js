@@ -60,7 +60,11 @@ const BodyComponent = ({radioValue,
                     timestamp: dataObject.timestamp,
                 };
             });
-            setData(priceData); // назначили новый массив с обработанными данными
+            if(!data){
+                 setData(priceData); // назначили новый массив с обработанными данными 
+                 return;
+            }
+          
 
             //ищем индекс в котором записан данный час
               const hourNowI = priceData.findIndex(dataObject => {
