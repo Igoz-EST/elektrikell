@@ -3,14 +3,17 @@ import React from "react";
 // import Col from "react-bootstrap/Col";
 import High from './high'
 import Low from './low'
+import './footer.scss';
+import { useSelector } from "react-redux";
 
 const FooterComponent = (props) => {
+  const radioValue = useSelector((state) => state.radioValue);
 
   return (
-    <>
-         {props.radioValue === 'low' ? (<Low {...props} />) : 
-            (<High currentPrice={props.currentPrice} worstTimeRange={props.worstTimeRange}/>)}
-    </>
+    <div id="footer">
+         {radioValue === 'low' ? (<Low {...props} />) : 
+            (<High/>)}
+    </div>
   );
 
 }
