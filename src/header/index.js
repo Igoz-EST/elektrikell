@@ -9,6 +9,7 @@ import { getCurrentPrice } from "../services/apiService";
 import ErrorModal from "../ErrorModal";
 import { useSelector, useDispatch } from 'react-redux';
 import { setCurrentPrice, setRadioValue, setSelectedCountry } from '../services/stateService';
+import './header.scss'
 function HeaderComponent () {
 
     const [showError, setShowError] = useState(false);
@@ -28,14 +29,14 @@ function HeaderComponent () {
     useEffect(() => {
         (async function () {
             try {
-                const response = await getCurrentPrice();
+                const response = await getCurrentPrice(selectedCountry);
                dispatch(setCurrentPrice(response.data[0].price));
             } catch (error) {
                 setShowError(true);
                 setErrorMessage(error.message);
             }
         })();
-    }, [dispatch]);
+    }, [dispatch, selectedCountry]);
 
     const radios = [
         { name: 'Low Price', value: 'low' },
@@ -52,7 +53,7 @@ function HeaderComponent () {
     }
 
     return (
-        <>
+        <div className="header">
             <Row className="mt-2">
                 <Col><h3>Elektrikell</h3></Col>
                 <Col>
@@ -69,7 +70,7 @@ function HeaderComponent () {
                     </DropdownButton>
                 </Col>
             </Row>
-            <Row>
+            <Row className="status">
                 <Col>Status</Col>
                 <Col className="text-center">
                     <ButtonGroup>
@@ -92,7 +93,7 @@ function HeaderComponent () {
                 <Col className="text-end">HIND {currentPrice}eur /MWh</Col>
             </Row>
             <ErrorModal errorMessage={errorMessage} show={showError} setShow={setShowError} />
-        </>
+        </div>
     );
 }
 

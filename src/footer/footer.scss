@@ -1,9 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit&family=Oxygen:wght@300&display=swap');
+
 #footer{
+    font-family: 'Oxygen', sans-serif;
     .btn-group {
         flex-wrap: wrap;
         label {
             margin: 0 10px;
+            background-color: orange;
+            border-radius: 7px;
+            width: 50px;
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
+        label:hover {
+            background-color: rgb(114, 81, 19);
+        }
+        label:active {
+            background-color: rgb(166, 116, 24);
+        }
+       
     }
 }
 
