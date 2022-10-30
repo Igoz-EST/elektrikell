@@ -3,7 +3,6 @@ import { configureStore, createAction, createReducer } from "@reduxjs/toolkit";
 const initialState = {
     hourValue: 1,
     currentPrice: 0,
-    radioValue: 'low',
     selectedCountry: {
         key: 'ee', 
         title: 'Eesti',
@@ -19,14 +18,15 @@ const initialState = {
         until: 0,
         worstPrice: 0,
     },
+    hourPath: null,
 };
 
 export const setHourValue = createAction("setHourValue");
 export const setCurrentPrice = createAction("setCurrentPrice");
-export const setRadioValue = createAction("setRadioValue");
 export const setSelectedCountry = createAction("setSelectedCountry");
 export const setBestTimeRange = createAction("setBestTimeRange");
 export const setWorstTimeRange = createAction("setWorstTimeRange");
+export const setHourPath = createAction("setHourPath");
 
 const reducer = createReducer(initialState, {
     [setHourValue]: (state, action) => {
@@ -34,9 +34,6 @@ const reducer = createReducer(initialState, {
     },
     [setCurrentPrice]: (state, action) => {
         state.currentPrice = action.payload;
-    },
-    [setRadioValue]: (state, action) => {
-        state.radioValue = action.payload;
     },
     [setSelectedCountry]: (state, action) => {
         state.selectedCountry = action.payload;
@@ -46,6 +43,9 @@ const reducer = createReducer(initialState, {
     },
     [setWorstTimeRange]: (state, action) => {
         state.worstTimeRange = action.payload;
+    },
+    [setHourPath]: (state, action) => {
+        state.hourPath = action.payload;
     },
 });
 

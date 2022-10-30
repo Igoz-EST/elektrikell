@@ -8,17 +8,20 @@ import DropdownButton from 'react-bootstrap/DropdownButton';
 import { getCurrentPrice } from "../services/apiService";
 import ErrorModal from "../ErrorModal";
 import { useSelector, useDispatch } from 'react-redux';
-import { setCurrentPrice, setRadioValue, setSelectedCountry } from '../services/stateService';
+import { setCurrentPrice, setSelectedCountry } from '../services/stateService';
 import './header.scss'
+//import { Link } from "react-router-dom";
+import { useNavigate, useLocation } from 'react-router-dom';
 function HeaderComponent () {
 
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const currentPrice = useSelector((state) => state.currentPrice);
-    const radioValue = useSelector((state) => state.radioValue);
     const selectedCountry = useSelector((state) => state.selectedCountry);
     const dispatch = useDispatch();
-
+    const navigate = useNavigate();
+    const location = useLocation();
+    const hourPath = useSelector((state) => state.hourPath);
     const countries = [
         { key: 'ee', title: 'Eesti' },
         { key: 'fi', title: 'Soome' },
@@ -39,24 +42,27 @@ function HeaderComponent () {
     }, [dispatch, selectedCountry]);
 
     const radios = [
-        { name: 'Low Price', value: 'low' },
-        { name: 'High price', value: 'high' },
+        { name: 'Low Price', value: '/low' },
+        { name: 'High price', value: '/high' },
     ];
 
     function handleOnChangePrice(event) {
         // event.preventDefault();
-       dispatch(setRadioValue(event.currentTarget.value)); 
+       navigate(event.currentTarget.value);
+     
     }
 
     function handleOnSelectCountry(key, event) {
       dispatch(setSelectedCountry(countries.find(country => country.key === key)));  
     }
-
+    console.log('hourPath',hourPath);
     return (
         <div className="header">
             <Row className="mt-2">
                 <Col><h3>Elektrikell</h3></Col>
                 <Col>
+                {/* <Link to="/high" >Show high price</Link>
+                <Link to="/low" >Show low price</Link> */}
                     <DropdownButton
                         key="Secondary"
                         id={`dropdown-variants-secondary`}
@@ -82,7 +88,7 @@ function HeaderComponent () {
                                 variant={idx % 2 ? 'outline-danger' : 'outline-success'}
                                 name="radio"
                                 value={radio.value}
-                                checked={radioValue === radio.value}
+                                checked={location.pathname === radio.value || (idx === 0 && location.pathname ==='/') || location.pathname === `${radio.value}/${hourPath}`}
                                 onChange={handleOnChangePrice}
                             >
                                 {radio.name}
