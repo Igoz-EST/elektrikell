@@ -88,7 +88,7 @@ function HeaderComponent () {
                                 variant={idx % 2 ? 'outline-danger' : 'outline-success'}
                                 name="radio"
                                 value={radio.value}
-                                checked={location.pathname === radio.value || (idx === 0 && location.pathname ==='/') || location.pathname === `${radio.value}/${hourPath}`}
+                                checked={location.pathname.includes(radio.value) || (idx === 0 && location.pathname ==='/')}
                                 onChange={handleOnChangePrice}
                             >
                                 {radio.name}
