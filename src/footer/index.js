@@ -4,11 +4,14 @@ import React from "react";
 import High from './high'
 import Low from './low'
 import './footer.scss';
-
+// библюатека, которая нам помогает показывать те компоненты, которые были запрошенны через URL.
 import { Route, Routes } from "react-router-dom";
 
 const FooterComponent = (props) => {
-
+  // Routes это wrapper наших маршрутов
+  // Route это маршрут в который передаём компонент через props
+  // path совподает с нашим URl и route рендерит его полученный компонент
+  // в path через: мы можем передать компоненты параметра URL  
   return (
     <div id="footer">
       <Routes>
