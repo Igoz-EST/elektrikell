@@ -16,10 +16,19 @@ function HeaderComponent () {
 
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
+    // useSelector hook который помогает вам следить за redux state и возвращает нам новое значение
+    // useSelector принимает функцию в котором мы получаем всё состояние reduxa и выбираем необходимый
+    // useSelector при необходимости запускает рендер компонента.
+    // useSelector ловит
     const currentPrice = useSelector((state) => state.currentPrice);
     const selectedCountry = useSelector((state) => state.selectedCountry);
+    // useDispatch это фунция отправки действия/action он принимает action, который нужно выполнить
+    // в краце это связной между компонентом и redux.
+    // dispatch отправляет
     const dispatch = useDispatch();
+    // useNavigate это hook, который даёт нам возможность навигировать на другую страничку/компонент
     const navigate = useNavigate();
+    // useLocation даёт нам информацию о данной страничке/url. даёт нам где мы находимся.
     const location = useLocation();
     const hourPath = useSelector((state) => state.hourPath);
     const countries = [
@@ -33,6 +42,8 @@ function HeaderComponent () {
         (async function () {
             try {
                 const response = await getCurrentPrice(selectedCountry);
+                // dispatch запустил action, action в свою очередь запустил reducer
+                // В reducer передались данные в объект action.payload.
                dispatch(setCurrentPrice(response.data[0].price));
             } catch (error) {
                 setShowError(true);
@@ -48,6 +59,7 @@ function HeaderComponent () {
 
     function handleOnChangePrice(event) {
         // event.preventDefault();
+        // отправляет на другую страничку
        navigate(event.currentTarget.value);
      
     }
@@ -62,7 +74,11 @@ function HeaderComponent () {
                 <Col><h3>Elektrikell</h3></Col>
                 <Col>
                 {/* <Link to="/high" >Show high price</Link>
-                <Link to="/low" >Show low price</Link> */}
+                <Link to="/low" >Show low price</Link> 
+                Link и useNavigate это по сути одно и тоже
+                Link это компонент, который нас отправит по ссылке, которую мы передали props to
+                useNavigate - hook, который используем вне JSX
+                */}
                     <DropdownButton
                         key="Secondary"
                         id={`dropdown-variants-secondary`}
