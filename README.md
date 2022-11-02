@@ -1,70 +1,119 @@
-# Getting Started with Create React App
+# Elektrikell app.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This project is build on react framework with bootstrap elements. [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+## What is this app about?
 
-In the project directory, you can run:
+In this web app, you can see the price of electricity at a specific time. You can also change the country, to see their prices to compare. Another feature of this app is that you can choose the hours range to see the electricity's lowest and highest price times.
 
-### `npm start`
+## Why react?
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+React JS allows complete flexibility to the developer.You can add as many external libraries and tools as required and build a massive, complicated web application. ReactJS will ensure your app performance is optimized.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Key benefits of react js for front-end development
 
-### `npm test`
+ ◉ Speed
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+ ◉ Flexibility
 
-### `npm run build`
+ ◉ Performance
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+ ◉ Usability
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+ ◉ Reusable Components
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+ ◉ It's easy to learn
 
-### `npm run eject`
+ ◉ It helps to build rich user interfaces
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+ ◉ It allows writing custom components
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+# How this app works
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Our project works with the API to display up-to-date information about electricity prices and times. We take this information from [elering.ee](https://elering.ee/)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+```
+const apiUrl = 'https://dashboard.elering.ee/api';
 
-## Learn More
+export async function getCurrentPrice(selectedCountry) {
+const country = selectedCountry.key;
+const response = await fetch(`${apiUrl}/nps/price/${country}/current`);
+return response.json();
+};
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+```
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+In the code above, we are exporting the async function, which is awaiting the server response, and saving it to the variable 'response'.
 
-### Code Splitting
+## Displaying data
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+To display the received data, we used the library named [Recharts](https://recharts.org/en-US/). This library allows you to build charts with your data.
 
-### Analyzing the Bundle Size
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### `JSX example:`
+```
+ return (
+        <>
+            <Row>
+                <Col>
+                    <ResponsiveContainer width="100%" height="100%" minHeight="500px">
+                        <LineChart
+                            width={500}
+                            height={300}
+                            data={data.priceData}
+                            margin={{
+                                top: 5,
+                                right: 30,
+                                left: 20,
+                                bottom: 5,
+                            }}
+                        >
+                            <CartesianGrid strokeDasharray="3 3" />
+                            <XAxis dataKey="x" />
+                            <YAxis dataKey="y" />
+                            <Tooltip />
+                            <Line type="monotone" dataKey="y" stroke="#8884d8" />
+                            <ReferenceLine x={hourNowI} stroke="red" />
+                            {
+                                radioValue === 'low'
+                                    ? <ReferenceArea x1={x1} x2={x2} stroke="green" fill="green" opacity={0.4} />
+                                    : <ReferenceArea x1={x1} x2={x2} stroke="red" fill="red" opacity={0.4} />
+                            }
 
-### Making a Progressive Web App
+                        </LineChart>
+                    </ResponsiveContainer>
+                </Col>
+            </Row>
+            <ErrorModal errorMessage={errorMessage} show={showError} setShow={setShowError} />
+        </>
+    );
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Data processing
 
-### Advanced Configuration
+To work with time, we used a library called [momentjs](https://momentjs.com/). This library makes it more convenient to work with time. It will help us to work with the receiving data.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+```
+let priceData = response[selectedCountry.key].map(dataObject => {
+                    return {
+                        x: moment.unix(dataObject.timestamp).format('HH'),
+                        y: dataObject.price,
+                        timestamp: dataObject.timestamp,
+                    };
+                }
+```
+In the code above, we are making a new array, which has objects with processed data.
 
-### Deployment
+## Optimization
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+To optimize our project and rid of extra rerenders, we used Redux.
+### What are the advantages of Redux?
 
-### `npm run build` fails to minify
+It is very difficult to reuse the components in React because it is tightly coupled with the root component. Redux reduces this complexity and provides global accessibility that helps to build applications that work frequently; are easy to test and run in different environments (client, server, and native).
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+![Redux explanation](https://synergytop.com/wp-content/uploads/2019/06/Store.png)
+
+
+## Multipage
+
+Why use React Router? React Router, and dynamic, client-side routing, allows us to build a single-page web application with navigation without the page refreshing as the user navigates. React Router uses component structure to call components, which display the appropriate information.
