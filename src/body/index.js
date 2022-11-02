@@ -85,8 +85,7 @@ const BodyComponent = () => {
                 x={data.priceData?.findIndex((d) => d.now)}
                 stroke="red"
               />
-              {location.pathname.includes("/low") ||
-              location.pathname === "/" ? (
+              {location.pathname.includes("/low") || !location.pathname.includes('/high') ? (
                 <ReferenceArea
                   x1={x.x1}
                   x2={x.x2}

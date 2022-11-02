@@ -8,6 +8,7 @@ import moment from "moment";
 import { useSelector, useDispatch } from "react-redux";
 import { setHourValue, setHourPath } from '../services/stateService';
 import { useParams, useNavigate } from 'react-router-dom';
+import { localUrl } from "../services/apiService";
 
 function Low() {
 
@@ -32,18 +33,18 @@ function Low() {
         const countDownUntil = moment.unix(bestTimeRange.timestamp).toDate();
         setTime(countDownUntil);
         dispatch(setHourValue(+hours || 1));
+        if(bestTimeRange.timestamp > moment().unix()) {
+            setShowElement('countdown');
+        } else {
+            setShowElement('right now');
+        }
     }, [bestTimeRange, hours, dispatch]);
 
     function handleOnChange(event) {
         const hourPath = event.currentTarget.value
         dispatch(setHourPath(hourPath));
 
-        if(bestTimeRange.timestamp > moment().unix()) {
-            setShowElement('countdown');
-        } else {
-            setShowElement('right now');
-        }
-        navigate('/low/' + hourPath)
+        navigate(localUrl + '/low/' + hourPath);
         dispatch(setHourValue(+hourPath));
     }
 
